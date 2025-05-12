@@ -1,0 +1,65 @@
+products = {}
+
+def add_initial_products():
+    print("\n\033[34m--- INGRESO INICIAL DE 5 PRODUCTOS AL INVENTARIO ---\033[0m")
+    for i in range(5):
+        print(f"\nProducto #{i + 1}")
+        name = input("Nombre del producto: ").strip()
+        while name in products:
+            print("\033[31mEse producto ya existe. Ingrese un nombre diferente.\033[0m")
+            name = input("Nombre del producto: ").strip()
+
+        try:
+            amount = int(input("Cantidad disponible: "))
+            price = float(input("Precio unitario: "))
+        except ValueError:
+            print("\033[31mError: Ingrese valores numéricos válidos.\033[0m")
+            return
+
+        products[name] = {'amount': amount, 'price': price}
+    print("\n\033[32mProductos ingresados correctamente.\033[0m")
+
+def consult_products():
+    if not products:
+        print("\n\033[31m---------- El inventario está vacío. -----------\033[0m\n")
+        return
+
+    product_name = input("\nIngrese el nombre del producto que desea buscar: ").strip().lower()
+
+    found = False
+    for name_product, datos in products.items():
+        if name_product.lower() == product_name:
+            cantidad = datos['amount']
+            precio = datos['price']
+            total_value = cantidad * precio
+            price_formatted = "${:,.2f}".format(precio)
+            total_formatted = "${:,.2f}".format(total_value)
+
+            print("\n\033[33m------------------- PRODUCTO ENCONTRADO -------------------\033[0m\n")
+            print(f"{'NOMBRE':<20} {'CANTIDAD':<10} {'PRECIO UNITARIO':<20} {'VALOR TOTAL':<20}")
+            print("-" * 70)
+            print(f"{name_product:<20} {cantidad:<10} {price_formatted:<20} {total_formatted:<20}")
+            print("-" * 70)
+            found = True
+            break
+
+    if not found:
+        print("\n\033[31m---------- Producto no existente en el inventario. -----------\033[0m")
+
+def main_menu():
+    while True:
+        print("\n\033[36m--- MENÚ PRINCIPAL ---\033[0m")
+        print("1. Consultar producto")
+        print("2. Salir")
+        option = input("Seleccione una opción: ")
+        if option == '1':
+            consult_products()
+        elif option == '2':
+            print("Saliendo del sistema...")
+            break
+        else:
+            print("\033[31mOpción inválida. Intente de nuevo.\033[0m")
+
+# Ejecución principal
+add_initial_products()
+main_menu()
