@@ -1,0 +1,26 @@
+def consult_products():
+    if not products:
+        print("\n\033[31m---------- El inventario está vacío. -----------\033[0m\n")
+        return
+
+    product_name = input("\nIngrese el nombre del producto que desea buscar: ").strip().lower()
+
+    found = False
+    for name_product, datos in products.items():
+        if name_product.lower() == product_name:
+            cantidad = datos['amount']
+            precio = datos['price']
+            total_value = cantidad * precio
+            price_formatted = "${:,.2f}".format(precio)
+            total_formatted = "${:,.2f}".format(total_value)
+
+            print("\n\033[33m------------------- PRODUCTO ENCONTRADO -------------------\033[0m\n")
+            print(f"{'NOMBRE':<20} {'CANTIDAD':<10} {'PRECIO UNITARIO':<20} {'VALOR TOTAL':<20}")
+            print("-" * 70)
+            print(f"{name_product:<20} {cantidad:<10} {price_formatted:<20} {total_formatted:<20}")
+            print("-" * 70)
+            found = True
+            break
+
+    if not found:
+        print("\n\033[31m---------- Producto no existente en el inventario. -----------\033[0m")
